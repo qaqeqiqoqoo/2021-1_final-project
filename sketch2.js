@@ -61,7 +61,7 @@ stroke(0);
 this.tent[i].display(7); //visual
 }
 
-fill(75, 200, 0);
+fill(250, 250, 250);
 strokeWeight(3.5);
 ellipse(_tx, _ty, 70, 70);
 
@@ -82,13 +82,6 @@ arc(_tx, _ty + 6, 20, 20, QUARTER_PI, PI - QUARTER_PI);
 //arc(50, 55, 70, 70, PI, PI+QUARTER_PI);
 }
 }
-
-
-
-
-
-
-
 
 //class for each "segment" of the Limb
 //begin class block:
@@ -206,3 +199,6 @@ this.segments[i].display(sw, this.a, this.b);
 }
 }
 }
+
+//연산이 끝난 다음에 콘솔넣어서 값을 체크
+//각 페이지를 따로 만들어서 나중에 합치자. 

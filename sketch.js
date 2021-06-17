@@ -68,9 +68,9 @@ function Greeting()
     //       };
     // }
 
-    this.draw = function() {
-        drawSprites();
-    }
+    // this.draw = function() {
+    //     drawSprites();
+    // }
     this.mousePressed = function()
     {
         this.sceneManager.showNextScene();
