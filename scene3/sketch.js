@@ -4,15 +4,41 @@ let pose;
 let fart;
 let draggedSprite;
 let words = false;
+let poo = false;
 
+let particleArray =[];
+let s = 5;//circle scale
 
-
+function createParticle(){
+    return {
+        position: { x: width / 2, y: 150 },
+    velocity: { x: random(-1, 1), y: random(-5, 0) }
+    };
+}
+function initializeParticle(particle) {
+    particle.position = { x: width / 2, y:150 };
+    particle.velocity = { x: random(-1, 1), y: random(-10, 0) };
+    
+    return particle;
+  }
+function advanceParticle(particle) {
+    particle.position.x += particle.velocity.x;
+    particle.position.y += particle.velocity.y;  
+}
+  
 function setup() {
     createCanvas(windowWidth, windowHeight);
+    c = color(random(255), random(255), random(255));
+
+    for (let i = 0; i < 100; i++) {
+        let createdParticle = createParticle();
+        let initializedParticle = initializeParticle(createdParticle);
+        
+        particleArray.push(initializedParticle);
+      }
+
     video = createCapture(VIDEO);
     video.hide();
-    poseNet = ml5.poseNet(video, this.modelLoaded);
-    poseNet.on('pose',this.gotPoses);
 
     fart = createSprite(width / 2, 90);
     fart.addAnimation('normal', 'Layer 6.png');
@@ -23,13 +49,18 @@ function setup() {
         words = true;
     }
 
+    fart.onMouseOut = function(){
+        words = false;
+    }
+
     fart.onMousePressed = function() {
         this.changeAnimation('fart');
         this.animation.goToFrame(this.animation.getLastFrame());
         if (draggedSprite == null) {
           draggedSprite = this;
         }
-
+        poo = true;
+    }
         
         fart.onMouseReleased = function() {
             this.changeAnimation('fart');
@@ -37,41 +68,41 @@ function setup() {
             if (draggedSprite == this) {
               draggedSprite = null;
             }
+            poo = false;
+
           };
     }
-}
-function gotPoses(poses){
-    if(poses.length > 0 ){
-      pose = poses[0].pose;
-  }
-  }
-  
-  function modelLoaded() {
-    console.log("pose ready");
-  }
-  
-  function pooing(){
-      let posY = 0;
-      let speed = 5;
 
-    if(mouseIsPressed){
-        ellipse(width / 3, posY, 30);
-        
-    }
-    
-  }
 
 function draw() {
-    
+    c = color(random(255), random(255), random(255));
+
     image(video, 0, 0, width, height);
-    // if(pose){
-    //     // ellipse(pose.leftWrist.x-200, pose.leftWrist.y-150, 50);
-    // }
+ 
     drawSprites();
-    pooing();
+    
     if(words){
         textSize(50);
         text('엉덩이를 눌러주면 선물을 줄게!🍑', width/ 3, height /3);
     }
-
+    if(poo){
+        for (particle of particleArray) {
+            noStroke();
+            fill(c);
+            circle(particle.position.x, particle.position.y, s);//여기를 변수로 두고 점점 커지는 거 하고 싶어
+           
+        }
+        s++;  
+          
+          for (particle of particleArray) {
+            particle.velocity.y += 0.2;
+            
+            advanceParticle(particle);
+            
+            if (particle.position.y > height) {
+              initializeParticle(particle);
+            }
+    }
+    
+      }  
 }

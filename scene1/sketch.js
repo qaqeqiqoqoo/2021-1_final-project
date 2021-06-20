@@ -33,7 +33,7 @@ function draw() {
   drawSprites();
   if(words){
     textSize(50);
-    text('안녕 난 가슴사슴토끼야.', width / 3, 100);//타이핑되는 효과.....
+    text('안녕 난 가슴사슴토끼야.', width / 2, 100);//타이핑되는 효과.....
     // saying.play();//콜백으로 넣어야 소리가나나? 
   }
   
